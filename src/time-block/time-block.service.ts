@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { TaskDto } from './task.dto';
+import { TaskDto } from './time-block.dto';
 
 @Injectable()
 export class TaskService {
