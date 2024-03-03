@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { TaskController } from './time-block.controller';
+import { TimeBlockController } from './time-block.controller';
 import { PrismaService } from 'src/prisma.service';
-import { TaskService } from './time-block.service';
+import { TimeBlockService } from './time-block.service';
 
 @Module({
-  controllers: [TaskController],
-  providers: [TaskService, PrismaService],
-  exports: [TaskService],
+  controllers: [TimeBlockController],
+  providers: [TimeBlockService, PrismaService],
+  exports: [TimeBlockService],
 })
-export class TaskModule {}
+export class TimeBlockModule {}
