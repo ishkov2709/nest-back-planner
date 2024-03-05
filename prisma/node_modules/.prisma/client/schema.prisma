@@ -59,6 +59,7 @@ model PomodoroSession {
   userId         String          @map("user_id")
   pomodoroRounds PomodoroRound[]
   user           User            @relation(fields: [userId], references: [id])
+  isCompleted    Boolean?        @default(false) @map("is_completed")
 
   @@map("pomodoro_session")
 }
