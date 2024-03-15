@@ -51,7 +51,7 @@ export class AuthController {
 
     if (!refreshTokenFromCookies) {
       this.authService.removeRefreshTokenFromResponse(res);
-      throw new UnauthorizedException('Refresh token is not passed');
+      throw new UnauthorizedException('Refresh token not passed');
     }
 
     const { refreshToken, ...response } = await this.authService.getNewTokens(
@@ -67,7 +67,6 @@ export class AuthController {
   @Post('logout')
   async logout(@Res({ passthrough: true }) res: Response) {
     this.authService.removeRefreshTokenFromResponse(res);
-
     return true;
   }
 }

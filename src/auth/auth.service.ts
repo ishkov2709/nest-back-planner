@@ -5,10 +5,10 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserService } from 'src/user/user.service';
-import { AuthDto } from './dto/auth.dto';
 import { verify } from 'argon2';
 import { Response } from 'express';
+import { UserService } from 'src/user/user.service';
+import { AuthDto } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -34,7 +34,7 @@ export class AuthService {
   async register(dto: AuthDto) {
     const oldUser = await this.userService.getByEmail(dto.email);
 
-    if (oldUser) throw new BadRequestException('User already exist');
+    if (oldUser) throw new BadRequestException('User already exists');
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...user } = await this.userService.create(dto);
@@ -56,15 +56,22 @@ export class AuthService {
 
     const tokens = this.issueTokens(user.id);
 
-    return { user, ...tokens };
+    return {
+      user,
+      ...tokens,
+    };
   }
 
   private issueTokens(userId: string) {
     const data = { id: userId };
 
-    const accessToken = this.jwt.sign(data, { expiresIn: '1h' });
+    const accessToken = this.jwt.sign(data, {
+      expiresIn: '1h',
+    });
 
-    const refreshToken = this.jwt.sign(data, { expiresIn: '7d' });
+    const refreshToken = this.jwt.sign(data, {
+      expiresIn: '7d',
+    });
 
     return { accessToken, refreshToken };
   }
@@ -83,13 +90,14 @@ export class AuthService {
 
   addRefreshTokenToResponse(res: Response, refreshToken: string) {
     const expiresIn = new Date();
-    expiresIn.setDate(expiresIn.getDate()) + this.EXPIRE_DAY_REFRESH_TOKEN;
+    expiresIn.setDate(expiresIn.getDate() + this.EXPIRE_DAY_REFRESH_TOKEN);
 
     res.cookie(this.REFRESH_TOKEN_NAME, refreshToken, {
       httpOnly: true,
       domain: 'localhost',
       expires: expiresIn,
       secure: true,
+      // lax if production
       sameSite: 'none',
     });
   }
@@ -100,6 +108,7 @@ export class AuthService {
       domain: 'localhost',
       expires: new Date(0),
       secure: true,
+      // lax if production
       sameSite: 'none',
     });
   }
