@@ -16,8 +16,8 @@ model User {
   name             String?
   password         String
   workInterval     Int?              @default(50)
-  beakInterval     Int?              @default(10)
-  intervalCount    Int?              @default(7)
+  breakInterval    Int?              @default(10)
+  intervalsCount   Int?              @default(7)
   tomodoroSessions PomodoroSession[]
   tasks            Task[]
   timeBlocks       TimeBlock[]
